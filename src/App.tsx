@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import './App.scss';
 import { GoodsList } from './GoodsList';
 
@@ -8,23 +8,35 @@ import * as goodsAPI from './api/goods';
 export const App: React.FC = () => {
   const [goods, setGoods] = useState<Good[]>([]);
 
-  const handleGetAll = () => {
-    goodsAPI.getAll().then(receivedGoods => {
-      setGoods(receivedGoods);
-    });
-  };
+  const handleGetAll = useCallback(() => {
+    goodsAPI
+      .getAll()
+      .then(setGoods)
+      .catch(() => {
+        // eslint-disable-next-line no-console
+        console.error('Failed to load goods');
+      });
+  }, []);
 
-  const handleGet5First = () => {
-    goodsAPI.get5First().then(receivedGoods => {
-      setGoods(receivedGoods);
-    });
-  };
+  const handleGet5First = useCallback(() => {
+    goodsAPI
+      .get5First()
+      .then(setGoods)
+      .catch(() => {
+        // eslint-disable-next-line no-console
+        console.error('Failed to load goods');
+      });
+  }, []);
 
-  const handleGetRedGoods = () => {
-    goodsAPI.getRedGoods().then(receivedGoods => {
-      setGoods(receivedGoods);
-    });
-  };
+  const handleGetRedGoods = useCallback(() => {
+    goodsAPI
+      .getRedGoods()
+      .then(setGoods)
+      .catch(() => {
+        // eslint-disable-next-line no-console
+        console.error('Failed to load goods');
+      });
+  }, []);
 
   return (
     <div className="App">
